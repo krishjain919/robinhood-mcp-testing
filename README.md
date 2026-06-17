@@ -1,88 +1,91 @@
 # Robinhood MCP Testing
 
-This is a small project I built to test out Robinhood access with Python and eventually connect it to an MCP server.
+This is a small project I made to mess around with Robinhood access in Python and start building toward a simple MCP trading setup.
 
-Right now, the project is mostly focused on making sure I can log in, read my account data, and pull my holdings correctly. The longer-term goal is to grow this into a simple trading assistant that can look at signals, sentiment, and my portfolio, then suggest small trades with strict limits.
+Right now it can log into Robinhood, save/load sessions, read account info, pull holdings, and make a very basic trade plan from manual signal data.
 
 ## Why I Built This
 
-I built this because I wanted to experiment with Robinhood MCP-style workflows and see how far I could take it.
+I wanted to test what a Robinhood MCP workflow could look like before trying to build anything too complicated.
 
-The idea is not to build some huge trading bot right away. I just wanted a clean starting point where I can test Robinhood login, account reads, holdings, and eventually safe trade planning.
+The main goal right now is just to get the basics working: login, portfolio reads, holdings, simple signal parsing, and eventually small trade testing.
 
-## What This Does
+## How It Works
 
-Right now, this project can:
+The project uses `robin-stocks` to connect to Robinhood and `fastmcp` for the MCP server.
 
-* Log into Robinhood locally
-* Load a saved Robinhood session
-* Read buying power and cash
-* Read portfolio equity
-* Print current holdings
-* Show shares, equity, and percent change for each holding
+For sentiment, I am starting simple. Instead of connecting to X/Twitter right away, I am using a local CSV with example signals. The project scores those signals and turns them into a basic trade plan.
 
-This is mainly a read-only test right now.
+## Files
 
-## Current Files
-
-* `login_device.py` — tests Robinhood login and device approval
-* `test_robinhood_mcp.py` — tests reading account and portfolio data
-* `.env.example` — example environment variables
-* `requirements.txt` — Python dependencies
+* `login_device.py` — login test
+* `test_robinhood_mcp.py` — account/portfolio read test
+* `rh_client.py` — Robinhood helper functions
+* `risk.py` — small trade limits and cash-only checks
+* `sentiment.py` — basic signal scoring
+* `trade_planner.py` — creates a simple trade plan
+* `server.py` — MCP server starter
+* `signals.example.csv` — sample signal data
 
 ## Setup
 
-Create a virtual environment:
+Create and activate a virtual environment:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-Install requirements:
+Install everything:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Create a local `.env` file:
+Create your local env file:
 
 ```bash
 cp .env.example .env
 ```
 
-Then add your own Robinhood login info inside `.env`:
+Then fill in `.env`:
 
 ```env
 RH_USERNAME=your_robinhood_email
 RH_PASSWORD=your_robinhood_password
+MAX_TRADE_DOLLARS=5
+ALLOW_LIVE_TRADING=false
 ```
 
-## Running It
+## Run It
 
-First test login:
+Test Robinhood login:
 
 ```bash
 python login_device.py
 ```
 
-Then test reading account data:
+Test account reads:
 
 ```bash
 python test_robinhood_mcp.py
 ```
 
-If it works, it should print account cash, buying power, portfolio equity, and current holdings.
+Test the trade planner:
 
-## Next Steps
+```bash
+cp signals.example.csv signals.csv
+python trade_planner.py
+```
 
-I want to keep building this into a cleaner MCP project with:
+Run the MCP server:
 
-* A real MCP server wrapper
-* Portfolio summary tools
-* Manual sentiment signal input
-* Trade plan generation
-* Dry-run trades
-* Small live trade testing with strict max dollar limits
+```bash
+python server.py
+```
 
-Eventually, I want it to use signals from X/Twitter and other market sources, but for now I am keeping it simple and focused on testing the Robinhood connection.
+## Current Status
+
+This is still early. The read tests work, the basic trade planner works, and the MCP server has starter tools for account summary, holdings, and trade planning.
+
+Next I want to clean up the MCP flow, add dry-run trades, and eventually connect better signal sources instead of using a CSV.
