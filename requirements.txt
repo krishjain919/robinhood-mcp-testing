@@ -1,3 +1,5 @@
 robin-stocks
 python-dotenv
-pyotp
+fastmcp
+pydantic
+pandas
