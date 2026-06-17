@@ -5,3 +5,4 @@ __pycache__/
 .tokens/
 *.pickle
 .DS_Store
+signals.csv
