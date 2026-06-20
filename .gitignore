@@ -6,3 +6,4 @@ __pycache__/
 *.pickle
 .DS_Store
 signals.csv
+backtest_equity_curve.csv
