@@ -3,4 +3,5 @@ python-dotenv
 fastmcp
 pydantic
 pandas
+numpy
 yfinance
