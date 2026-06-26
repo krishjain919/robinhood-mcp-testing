@@ -7,3 +7,4 @@ __pycache__/
 .DS_Store
 signals.csv
 backtest_equity_curve.csv
+paper_trades.json
